@@ -26,7 +26,7 @@ static int32_t shufflenet_classify() {
 static void do_classify_zeros() {
     tflite_set_input_zeros();
     int32_t result = shufflenet_classify();
-    printf("Result after parameters with literal values is %ld\n", result);
+    printf("Result is %ld\n", result);
 }
 
 
