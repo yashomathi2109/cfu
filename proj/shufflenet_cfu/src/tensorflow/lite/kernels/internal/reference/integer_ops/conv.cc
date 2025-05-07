@@ -85,8 +85,10 @@ printf("print doing1x1");
         input_depth < MAX_CONV_INPUT_VALUES && (input_depth % 8) == 0 &&
         (output_depth % 8) == 0) {
           printf("print doing1x1 if2");
-          int8_t* accelerated_output = new int8_t[output_shape];
-          int8_t* reference_output = new int8_t[output_shape];
+          int output_size = output_shape.FlatSize();  // Calculate the total number of elements
+
+          int8_t* accelerated_output = new int8_t[output_size];
+          int8_t* reference_output = new int8_t[output_size];
       Mnv2ConvPerChannel1x1(params, output_multiplier, output_shift,
                             input_shape, input_data, filter_shape, filter_data,
                             bias_shape, bias_data, output_shape, accelerated_output);
