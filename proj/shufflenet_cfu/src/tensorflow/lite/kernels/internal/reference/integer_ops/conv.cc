@@ -71,6 +71,8 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
   const int output_width = output_shape.Dims(2);
 
 #ifdef ACCEL_CONV
+int8_t* accelerated_output = new int8_t[output_size];
+int8_t* reference_output = new int8_t[output_size];
 printf("print doing1x1");
   if (pad_width == 0 && pad_height == 0 && dilation_width_factor == 1 &&
       dilation_height_factor == 1 &&  // params.weights_offset == 0 &&
@@ -87,12 +89,31 @@ printf("print doing1x1");
 
       Mnv2ConvPerChannel1x1(params, output_multiplier, output_shift,
                             input_shape, input_data, filter_shape, filter_data,
-                            bias_shape, bias_data, output_shape, output_data);
+                            bias_shape, bias_data, output_shape, accelerated_output);
       printf("print doing1x1 done");
 
-      return;
+      ConvPerChannel(params, output_multiplier, output_shift,
+        input_shape, input_data, filter_shape, filter_data,
+        bias_shape, bias_data, output_shape, reference_output);
+
+      // Compare outputs
+      for (int i = 0; i < output_size; i++) {
+        if (accelerated_output[i] != reference_output[i]) {
+          printf("Mismatch at index %d: Accelerated = %d, Reference = %d\n",
+                i, accelerated_output[i], reference_output[i]);
+        }
+      }
+
+      delete[] accelerated_output;
+      delete[] reference_output;
     }
   }
+    // Run reference implementation
+  
+
+
+      return;
+   
 #endif
 
 #ifdef DUMP_CONV
