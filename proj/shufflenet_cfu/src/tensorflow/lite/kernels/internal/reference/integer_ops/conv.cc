@@ -70,53 +70,24 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
   const int output_height = output_shape.Dims(1);
   const int output_width = output_shape.Dims(2);
 
-#ifdef ACCEL_CONV
-
-printf("print doing1x1");
+  #ifdef ACCEL_CONV
   if (pad_width == 0 && pad_height == 0 && dilation_width_factor == 1 &&
       dilation_height_factor == 1 &&  // params.weights_offset == 0 &&
       output_activation_min == -128 && output_activation_max == 127 &&
       batches == 1) {
-        printf("print doing1x1 if1");
-
     if (params.stride_width == 1 && params.stride_height == 1 &&
         input_height == output_height && input_width == output_width &&
         filter_height == 1 && filter_width == 1 && bias_data &&
         input_depth < MAX_CONV_INPUT_VALUES && (input_depth % 8) == 0 &&
         (output_depth % 8) == 0) {
-          printf("print doing1x1 if2");
-          int output_size = output_shape.FlatSize();  // Calculate the total number of elements
-
-          int8_t* accelerated_output = new int8_t[output_size];
-          int8_t* reference_output = new int8_t[output_size];
       Mnv2ConvPerChannel1x1(params, output_multiplier, output_shift,
                             input_shape, input_data, filter_shape, filter_data,
-                            bias_shape, bias_data, output_shape, accelerated_output);
-      printf("print doing1x1 done");
-
-      ConvPerChannel(params, output_multiplier, output_shift,
-        input_shape, input_data, filter_shape, filter_data,
-        bias_shape, bias_data, output_shape, reference_output);
-
-      // Compare outputs
-      for (int i = 0; i < output_size; i++) {
-        if (accelerated_output[i] != reference_output[i]) {
-          printf("Mismatch at index %d: Accelerated = %d, Reference = %d\n",
-                i, accelerated_output[i], reference_output[i]);
-        }
-      }
-
-      delete[] accelerated_output;
-      delete[] reference_output;
+                            bias_shape, bias_data, output_shape, output_data);
+      return;
     }
   }
-    // Run reference implementation
-  
-
-
-      return;
-   
 #endif
+
 
 #ifdef DUMP_CONV
   if (filter_shape.FlatSize() == 2304) {
