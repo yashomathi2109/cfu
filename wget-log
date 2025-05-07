@@ -1,0 +1,6 @@
+--2025-04-19 00:57:02--  https://amd-ax-dl.entitlenow.com/dl/ul/2024/11/14/R212592549/FPGAs_AdaptiveSoCs_Unified_2024.2_1113_1001_Lin64.bin?hash=garv2W76TL0n7oDlQ_BH5w
+Resolving amd-ax-dl.entitlenow.com (amd-ax-dl.entitlenow.com)... 23.45.46.210, 23.45.46.198, 2600:1407:3c00:cd::172d:2eb1, ...
+Connecting to amd-ax-dl.entitlenow.com (amd-ax-dl.entitlenow.com)|23.45.46.210|:443... connected.
+HTTP request sent, awaiting response... 403 Forbidden
+2025-04-19 00:57:03 ERROR 403: Forbidden.
+
