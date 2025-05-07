@@ -141,7 +141,7 @@ printf("print doing1x1");
     b64_dump((const int8_t*)bias_data, output_depth * sizeof(uint32_t));
   }
 #endif
-const int filter_input_depth = filter_shape.Dims(3);
+
 const int filter_input_depth = filter_shape.Dims(3);
   const int groups = input_depth / filter_input_depth;
   TFLITE_DCHECK_EQ(input_depth % filter_input_depth, 0);
