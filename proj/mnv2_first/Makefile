@@ -27,9 +27,9 @@ DEFINES += NDEBUG
 
 # so that CI can make a SW-only version of the executable
 #   (no custom instructions or CSRs)
-#ifdef SW_ONLY
-#DEFINES += NDEBUG NPROFILE CFU_SOFTWARE_DEFINED
-#endif
+ifdef SW_ONLY
+DEFINES += NDEBUG NPROFILE CFU_SOFTWARE_DEFINED
+endif
 
 # Uncomment to include pdti8 in built binary
 DEFINES += INCLUDE_MODEL_PDTI8
@@ -49,7 +49,7 @@ RUN_MENU_ITEMS := 3 1
 # bugs with processing multiple batch handling.
 #DEFINES += USE_CONV_SMALL_BATCHES
 
-#DEFINES += ACCEL_CONV
+DEFINES += ACCEL_CONV
 
 # Used by soc/hps.mk
 # Choose the slimmer version of VexRiscv to fit with this large CFU

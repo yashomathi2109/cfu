@@ -17,20 +17,25 @@
 export DEFINES :=
 
 # Uncomment this line to use software defined CFU functions in software_cfu.cc
-DEFINES += NDEBUG CFU_SOFTWARE_DEFINED
+# DEFINES += NDEBUG CFU_SOFTWARE_DEFINED
 
 # Uncomment this line to skip debug code (large effect on performance)
 DEFINES += NDEBUG
 
-#ifdef SW_ONLY
-#DEFINES += NDEBUG NPROFILE CFU_SOFTWARE_DEFINED
-#endif
+ifdef SW_ONLY
+DEFINES += NDEBUG NPROFILE CFU_SOFTWARE_DEFINED
+endif
 
 # Uncomment this line to skip individual profiling output (has minor effect on performance).
 #DEFINES += NPROFILE
+# Uncomment to include pdti8 in built binary
+DEFINES += INCLUDE_MODEL_PDTI8
 
-# Uncomment to include specified model in built binary
+# Uncomment to include mnv2 in built binary (adds ~500kB to binary)
+ifneq 'hps' '$(PLATFORM)'
 DEFINES += INCLUDE_MODEL_SHUFFLENET
+endif
+RUN_MENU_ITEMS := 3 1
 #DEFINES += INCLUDE_MODEL_MICRO_SPEECH
 #DEFINES += INCLUDE_MODEL_MAGIC_WAND
 #DEFINES += INCLUDE_MODEL_MNV2
@@ -43,11 +48,13 @@ DEFINES += INCLUDE_MODEL_SHUFFLENET
 # Uncomment to include all TFLM examples (pdti8, micro_speech, magic_wand)
 #DEFINES += INCLUDE_ALL_TFLM_EXAMPLES
 
-DEFINES += DUMP_CONV
+#DEFINES += DUMP_CONV
 DEFINES += ACCEL_CONV
 
 # Uncomment this line to include the ASCII animated donut demo.
-DEFINES += DONUT_DEMO
-
+#DEFINES += DONUT_DEMO
+ifeq 'hps' '$(PLATFORM)'
+export EXTRA_LITEX_ARGS='--cpu-variant=slim+cfu'
+endif
 
 include ../proj.mk
