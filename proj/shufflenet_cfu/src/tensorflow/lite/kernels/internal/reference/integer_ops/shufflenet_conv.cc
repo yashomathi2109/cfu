@@ -181,6 +181,11 @@ void Mnv2ConvPerChannel1x1(
       CalculateChannelsPerBatch(input_depth, output_depth);
   const int num_batches =
       (channels_per_batch - 1 + output_depth) / channels_per_batch;
+      const int filter_input_depth = filter_shape.Dims(3);
+  const int groups = input_depth / filter_input_depth;
+  TFLITE_DCHECK_EQ(input_depth % filter_input_depth, 0);
+  const int filters_per_group = output_depth / groups;
+
   PERF_END(2);
 
   for (int batch = 0; batch < num_batches; batch++) {
@@ -188,6 +193,7 @@ void Mnv2ConvPerChannel1x1(
     const int batch_end =
         std::min(output_depth, batch_base + channels_per_batch);
     const int batch_size = batch_end - batch_base;
+    auto group = batch / filters_per_group;
 
     // Load up output channel parameters and filter values
     LoadOutputChannelWeights(output_multiplier, output_shift, bias_data,
@@ -196,7 +202,7 @@ void Mnv2ConvPerChannel1x1(
 
     PERF_START(5);
     // Reset input and output pointers
-    const uint32_t* input_ptr = (uint32_t*)input_data;
+    const uint32_t* input_ptr = (uint32_t*)input_data + group * filter_input_depth;
     uint32_t* output_ptr = (uint32_t*)(output_data + batch_base);
 
     // Load twice on first loop, no load on last loop and once every other
