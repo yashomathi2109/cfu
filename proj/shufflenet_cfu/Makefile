@@ -17,7 +17,7 @@
 export DEFINES :=
 
 # Uncomment this line to use software defined CFU functions in software_cfu.cc
-#DEFINES += NDEBUG CFU_SOFTWARE_DEFINED
+DEFINES += NDEBUG CFU_SOFTWARE_DEFINED
 
 # Uncomment this line to skip debug code (large effect on performance)
 DEFINES += NDEBUG
