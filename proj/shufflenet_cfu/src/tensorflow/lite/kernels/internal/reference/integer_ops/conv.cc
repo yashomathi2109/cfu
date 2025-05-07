@@ -71,8 +71,7 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
   const int output_width = output_shape.Dims(2);
 
 #ifdef ACCEL_CONV
-int8_t* accelerated_output = new int8_t[output_size];
-int8_t* reference_output = new int8_t[output_size];
+
 printf("print doing1x1");
   if (pad_width == 0 && pad_height == 0 && dilation_width_factor == 1 &&
       dilation_height_factor == 1 &&  // params.weights_offset == 0 &&
@@ -86,7 +85,8 @@ printf("print doing1x1");
         input_depth < MAX_CONV_INPUT_VALUES && (input_depth % 8) == 0 &&
         (output_depth % 8) == 0) {
           printf("print doing1x1 if2");
-
+          int8_t* accelerated_output = new int8_t[output_shape];
+          int8_t* reference_output = new int8_t[output_shape];
       Mnv2ConvPerChannel1x1(params, output_multiplier, output_shift,
                             input_shape, input_data, filter_shape, filter_data,
                             bias_shape, bias_data, output_shape, accelerated_output);
