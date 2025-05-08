@@ -92,7 +92,7 @@ inline static void LoadFilterValues(const uint32_t*& filter_words,
   PERF_START(4);
   for (int i = 0; i < num_words; i += 8) {
     uint32_t value = *(filter_words++);
-    printf("Loading filter value: %u\n", value);
+    printf("Loading filter value: %lu\n", value);
     CFU_STORE_FILTER_VALUE(*(filter_words++));
     CFU_STORE_FILTER_VALUE(*(filter_words++));
     CFU_STORE_FILTER_VALUE(*(filter_words++));
@@ -110,7 +110,7 @@ inline static void LoadInputValues(const uint32_t*& input_ptr,
   PERF_START(6);
   for (; input_depth_words > 4; input_depth_words -= 4) {
     uint32_t value = *(input_ptr++);
-    printf("Loading input value: %u\n", value);
+    printf("Loading input value: %lu\n", value);
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
@@ -123,7 +123,7 @@ inline static void UnloadOutputValues(uint32_t*& output_ptr, int num_words) {
   PERF_START(7);
   for (; num_words >4 ; num_words -= 4) {
     uint32_t value = CFU_GET_OUTPUT();
-    printf("Unloading output value: %u\n", value);
+    printf("Unloading output value: %lu\n", value);
     *(output_ptr++) = CFU_GET_OUTPUT();
     *(output_ptr++) = CFU_GET_OUTPUT();
     *(output_ptr++) = CFU_GET_OUTPUT();
