@@ -38,7 +38,7 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
   print_conv_params(params, input_shape, filter_shape, output_shape);
 #endif
   // Get parameters.
-  const int32_t input_offset = params.input_offset;  // r = s(q - Z)
+  //const int32_t input_offset = params.input_offset;  // r = s(q - Z)
   const int stride_width = params.stride_width;
   const int stride_height = params.stride_height;
   const int dilation_width_factor = params.dilation_width_factor;
