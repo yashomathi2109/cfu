@@ -15,7 +15,7 @@
 
 from amaranth_cfu import CfuTestBase, pack_vals
 
-from .mnv2_cfu import make_cfu
+from .shufflenet_cfu import make_cfu
 
 
 class CfuTest(CfuTestBase):
