@@ -190,7 +190,7 @@ void Mnv2ConvPerChannel1x1(
 
     PERF_START(5);
     // Reset input and output pointers
-    const uint32_t* input_ptr = (uint32_t*)input_data;
+    const uint32_t* input_ptr = (uint32_t*)(input_data +((batch_base + batch_size)/output_depth)* input_depth ) ;
     uint32_t* output_ptr = (uint32_t*)(output_data);
 
     // Load twice on first loop, no load on last loop and once every other
