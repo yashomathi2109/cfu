@@ -35,4 +35,6 @@ void print_arithmetic_params(const char* op_name,
 
 void print_int32_array(const int32_t* data, size_t count);
 
+void print_int8_array(const int8_t* data, size_t count);
+
 #endif  // _PRINT_PARAMS_H
