@@ -15,7 +15,7 @@ limitations under the License.
 #include <stdio.h>
 #include "cfu.h"
 
-#include "shufflenet_cfu.h"
+#include "shufflenet_sh_cfu.h"
 #include "shufflenet_conv.h"
 #include "tensorflow/lite/kernels/internal/common.h"
 #include "playground_util/print_params.h"
@@ -164,8 +164,8 @@ for (int batch = 0; batch < batches; ++batch) {
               // TODO(b/174275578): Add a check to make sure the
               // accumulator depth is smaller than 2^16.
               //acc += filter_val * (input_val + input_offset);
-              acc = cfu_op0(/* funct7= */ 0, /* in0= */ input_val, /* in1= */ filter_val);
-
+              //acc = cfu_op0(/* funct7= */ 0, /* in0= */ input_val, /* in1= */ filter_val);
+              acc = MAC_SW(input_val, filter_val); 
        
 #if 0
                 static int dbg_ctr = 0;
