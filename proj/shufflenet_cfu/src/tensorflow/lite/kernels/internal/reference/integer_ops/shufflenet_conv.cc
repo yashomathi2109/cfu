@@ -179,9 +179,13 @@ void Mnv2ConvPerChannel1x1(
 
   for (int batch = 0; batch < num_batches; batch++) {
     const int batch_base = batch * channels_per_batch;
+    printf("batchbase is %d",batch_base);
     const int batch_end =
         std::min(output_depth, batch_base + channels_per_batch);
+        printf("batchend is %d",batch_end);
+
     const int batch_size = batch_end - batch_base;
+    printf("batchsize is %d",batch_size);
 
     // Load up output channel parameters and filter values
     LoadOutputChannelWeights(output_multiplier, output_shift, bias_data,
@@ -192,19 +196,29 @@ void Mnv2ConvPerChannel1x1(
     // Reset input and output pointers
     const uint32_t* input_ptr = (uint32_t*)(input_data +((batch_base + batch_size)/output_depth)* input_depth ) ;
     uint32_t* output_ptr = (uint32_t*)(output_data);
+    printf("input ptr is %d",input_ptr);
+
 
     // Load twice on first loop, no load on last loop and once every other
     // time.
     LoadInputValues(input_ptr, input_depth_words);
+    printf("loading ip1");
     for (int p = 0; p < num_pixels - 1; p++) {
       input_ptr += input_depth_words;
+      printf("ip ptr is %d",input_ptr);
       LoadInputValues(input_ptr, input_depth_words);
+      printf("loading ip1");
       CFU_MACC_RUN();
+      printf("macc finish");
       UnloadOutputValues(output_ptr, batch_size / 4);
+      printf("unloading done");
       output_ptr += (output_depth - batch_size) / 4;
+      printf("output ptr is %d",output_ptr);
+
     }
     CFU_MACC_RUN();
     UnloadOutputValues(output_ptr, batch_size / 4);
+    printf("unloading 2done");
     PERF_END(5);
   }
 }
