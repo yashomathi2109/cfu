@@ -229,7 +229,6 @@ struct OutputQueue output_queue;
 uint32_t oq_get(struct OutputQueue* oq) {
   uint32_t result = oq->data[oq->r];
   oq->r = (oq->r + 1) % EBRAM_DEPTH_WORDS;
-    //printf("result val is %ld", result);
   return result;
 }
 
@@ -334,15 +333,13 @@ uint32_t set_reg(int funct7, uint32_t in0, uint32_t in1) {
     case 33:
       return calc_to_oq(&output_queue, &input_store, &filter_store);
 
-      case 34:
-      uint32_t result = oq_get(&output_queue);
-      printf("set_reg (case 34): result=%ld\n", result);
-      return result;
-       //return oq_get(&output_queue);
- 
-     default:
-       printf("Unhandled funct3");
-       return 0;
+    case 34:
+      printf("result val is %ld", oq_get(&output_queue));
+      return oq_get(&output_queue);
+
+    default:
+       printf("func is unhandled");
+      return 0;
   }
   return 0;
 }
