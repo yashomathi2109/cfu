@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "tensorflow/lite/kernels/internal/reference/integer_ops/shufflenet_conv.h"
+#include "tensorflow/lite/kernels/internal/reference/integer_ops/mnv2_conv.h"
 
-#include "shufflenet_cfu.h"
+#include "mnv2_cfu.h"
 #include "perf.h"
 #include "playground_util/print_params.h"
 
@@ -111,18 +111,21 @@ inline static void LoadInputValues(const uint32_t*& input_ptr,
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
+
+
   }
   PERF_END(6);
 }
 
 inline static void UnloadOutputValues(uint32_t*& output_ptr, int num_words) {
   PERF_START(7);
-  for (; num_words >4 ; num_words -= 4) {
+  for (; num_words > 4; num_words -= 4) {
     *(output_ptr++) = CFU_GET_OUTPUT();
     *(output_ptr++) = CFU_GET_OUTPUT();
     *(output_ptr++) = CFU_GET_OUTPUT();
     *(output_ptr++) = CFU_GET_OUTPUT();
   }
+ 
   PERF_END(7);
 }
 
@@ -173,7 +176,6 @@ void Mnv2ConvPerChannel1x1(
       CalculateChannelsPerBatch(input_depth, output_depth);
   const int num_batches =
       (channels_per_batch - 1 + output_depth) / channels_per_batch;
-      //const int num_batches = 1
   PERF_END(2);
 
   for (int batch = 0; batch < num_batches; batch++) {
@@ -189,10 +191,8 @@ void Mnv2ConvPerChannel1x1(
 
     PERF_START(5);
     // Reset input and output pointers
-    const uint32_t* input_ptr = (uint32_t*)(input_data +(batch_base* input_depth )) ;
-    uint32_t* output_ptr = (uint32_t*)(output_data +batch_base);
-
-
+    const uint32_t* input_ptr = (uint32_t*)input_data;
+    uint32_t* output_ptr = (uint32_t*)(output_data + batch_base);
 
     // Load twice on first loop, no load on last loop and once every other
     // time.
@@ -202,7 +202,6 @@ void Mnv2ConvPerChannel1x1(
       CFU_MACC_RUN();
       UnloadOutputValues(output_ptr, batch_size / 4);
       output_ptr += (output_depth - batch_size) / 4;
-
     }
     CFU_MACC_RUN();
     UnloadOutputValues(output_ptr, batch_size / 4);
