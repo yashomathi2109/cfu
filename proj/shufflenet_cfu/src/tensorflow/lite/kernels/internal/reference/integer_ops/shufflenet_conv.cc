@@ -126,7 +126,7 @@ for (; num_words > 2; num_words -= 4) {
 *(output_ptr++) = CFU_GET_OUTPUT();
 *(output_ptr++) = CFU_GET_OUTPUT();
 *(output_ptr++) = CFU_GET_OUTPUT();
-printf(*(output_ptr-1));
+printf("The value is: %u\n", *(output_ptr-1));
 }
 if (num_words == 2) {
 *(output_ptr++) = CFU_GET_OUTPUT();
