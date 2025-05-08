@@ -270,6 +270,8 @@ int32_t macc4_run4(struct InputStore* is, struct FilterStore* fs) {
      printf("accumulator val is %ld", accumulator);
     }
     result = (result >> 8) | ((0xff & post_process(accumulator)) << 24);
+    printf("result val is %ld", result);
+
   }
   return result;
 }
