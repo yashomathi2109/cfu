@@ -325,6 +325,7 @@ uint32_t set_reg(int funct7, uint32_t in0, uint32_t in1) {
       return filter_store_set(&filter_store, in0);
     case 25:
       input_store_set(&input_store, in0);
+      printf("The value mnv2 is: %lu\n", in0);
       return 0;
 
     case 33:

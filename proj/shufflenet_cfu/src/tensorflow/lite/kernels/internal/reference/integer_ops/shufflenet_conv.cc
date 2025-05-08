@@ -126,7 +126,7 @@ for (; num_words > 2; num_words -= 4) {
 *(output_ptr++) = CFU_GET_OUTPUT();
 *(output_ptr++) = CFU_GET_OUTPUT();
 *(output_ptr++) = CFU_GET_OUTPUT();
-printf("The value is: %lu\n", *(output_ptr-1));
+
 }
 if (num_words == 2) {
 *(output_ptr++) = CFU_GET_OUTPUT();
@@ -142,7 +142,7 @@ void print_int8_array(const int8_t* array, const RuntimeShape& shape) {
   printf("\n");
 }
 // Fixed-point per-channel-quantization convolution reference kernel.
-void Mnv2ConvPerChannel1x1(
+void ShConvPerChannel1x1(
     const ConvParams& params, const int32_t* output_multiplier,
     const int32_t* output_shift, const RuntimeShape& input_shape,
     const int8_t* input_data, const RuntimeShape& filter_shape,

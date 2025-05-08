@@ -26,7 +26,7 @@ namespace tflite {
 namespace reference_integer_ops {
 
 // Fixed-point per-channel-quantization convolution reference kernel.
-void Mnv2ConvPerChannel1x1(
+void ShConvPerChannel1x1(
     const ConvParams& params, const int32_t* output_multiplier,
     const int32_t* output_shift, const RuntimeShape& input_shape,
     const int8_t* input_data, const RuntimeShape& filter_shape,
