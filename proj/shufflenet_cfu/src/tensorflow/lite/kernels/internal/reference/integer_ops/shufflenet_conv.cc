@@ -144,6 +144,15 @@ void Mnv2ConvPerChannel1x1(
     int8_t* output_data) {
   PERF_START(2);
   // Get parameters.
+  void print_int8_array(const int8_t* array, const RuntimeShape& shape) {
+    int size = shape.FlatSize();  // Calculate the total number of elements
+    for (int i = 0; i < size; ++i) {
+      printf("%d ", array[i]);
+    }
+    printf("\n");
+  }
+  printf("Input data:\n");
+  print_int8_array(input_data, input_shape);
   const int32_t input_offset = params.input_offset;  // r = s(q - Z)
   const int32_t output_offset = params.output_offset;
 

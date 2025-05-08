@@ -25,13 +25,7 @@ limitations under the License.
 
 namespace tflite {
 namespace reference_integer_ops {
-void print_int8_array(const int8_t* array, const RuntimeShape& shape) {
-  int size = shape.FlatSize();  // Calculate the total number of elements
-  for (int i = 0; i < size; ++i) {
-    printf("%d ", array[i]);
-  }
-  printf("\n");
-}
+
 //Add function without accel which fills my output data2
 // Fixed-point per-channel-quantization convolution reference kernel.
 void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
@@ -90,7 +84,6 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
       Mnv2ConvPerChannel1x1(params, output_multiplier, output_shift,
                             input_shape, input_data, filter_shape, filter_data,
                             bias_shape, bias_data, output_shape, output_data);
-      print_int8_array(output_data, output_shape);
 
       return;
     }
