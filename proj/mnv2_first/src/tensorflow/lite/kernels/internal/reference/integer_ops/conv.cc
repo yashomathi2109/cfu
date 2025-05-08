@@ -91,7 +91,7 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
       Mnv2ConvPerChannel1x1(params, output_multiplier, output_shift,
                             input_shape, input_data, filter_shape, filter_data,
                             bias_shape, bias_data, output_shape, output_data);
-      print_int8_array(output_data, output_shape);
+      // print_int8_array(output_data, output_shape);
       return;
     }
   }
