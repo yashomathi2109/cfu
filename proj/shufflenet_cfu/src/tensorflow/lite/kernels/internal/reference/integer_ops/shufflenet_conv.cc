@@ -106,13 +106,9 @@ inline static void LoadFilterValues(const uint32_t*& filter_words,
 inline static void LoadInputValues(const uint32_t*& input_ptr,
                                    int input_depth_words) {
   PERF_START(6);
-  for (; input_depth_words > 2; input_depth_words -= 4) {
+  for (; input_depth_words > 4; input_depth_words -= 4) {
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
-    CFU_STORE_INPUT_VALUE(*(input_ptr++));
-    CFU_STORE_INPUT_VALUE(*(input_ptr++));
-  }
-  if (input_depth_words == 2) {
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
   }
@@ -121,13 +117,9 @@ inline static void LoadInputValues(const uint32_t*& input_ptr,
 
 inline static void UnloadOutputValues(uint32_t*& output_ptr, int num_words) {
   PERF_START(7);
-  for (; num_words > 2; num_words -= 4) {
+  for (; num_words >4 ; num_words -= 4) {
     *(output_ptr++) = CFU_GET_OUTPUT();
     *(output_ptr++) = CFU_GET_OUTPUT();
-    *(output_ptr++) = CFU_GET_OUTPUT();
-    *(output_ptr++) = CFU_GET_OUTPUT();
-  }
-  if (num_words == 2) {
     *(output_ptr++) = CFU_GET_OUTPUT();
     *(output_ptr++) = CFU_GET_OUTPUT();
   }
@@ -197,7 +189,7 @@ void Mnv2ConvPerChannel1x1(
 
     PERF_START(5);
     // Reset input and output pointers
-    const uint32_t* input_ptr = (uint32_t*)input_data + batch_base;
+    const uint32_t* input_ptr = (uint32_t*)input_data;
     uint32_t* output_ptr = (uint32_t*)(output_data + batch_base);
 
     // Load twice on first loop, no load on last loop and once every other
