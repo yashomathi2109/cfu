@@ -167,7 +167,6 @@ void Mnv2ConvPerChannel1x1(
   CFU_SET_ACTIVATION_MAX(output_activation_max);
 
   // Access filter data as words
-  // Access filter data as words
   const uint32_t* filter_words = (const uint32_t*)filter_data;
   const int num_pixels = output_height * output_width;
   const int channels_per_batch =
@@ -175,6 +174,7 @@ void Mnv2ConvPerChannel1x1(
   const int num_batches =
       (channels_per_batch - 1 + output_depth) / channels_per_batch;
   PERF_END(2);
+  printf("numbatches is %d",num_batches);
 
   for (int batch = 0; batch < num_batches; batch++) {
     const int batch_base = batch * channels_per_batch;
