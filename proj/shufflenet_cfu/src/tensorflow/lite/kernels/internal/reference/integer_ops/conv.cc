@@ -25,7 +25,7 @@ limitations under the License.
 
 namespace tflite {
 namespace reference_integer_ops {
-
+//Add function without accel which fills my output data2
 // Fixed-point per-channel-quantization convolution reference kernel.
 void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
                     const int32_t* output_shift,
@@ -69,24 +69,26 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
   const int filter_width = filter_shape.Dims(2);
   const int output_height = output_shape.Dims(1);
   const int output_width = output_shape.Dims(2);
+  //fill my outputdata2 using new functions
+  #ifdef ACCEL_CONV
+  if (pad_width == 0 && pad_height == 0 && dilation_width_factor == 1 &&
+      dilation_height_factor == 1 &&  // params.weights_offset == 0 &&
+      output_activation_min == -128 && output_activation_max == 127 &&
+      batches == 1) {
+    if (params.stride_width == 1 && params.stride_height == 1 &&
+        input_height == output_height && input_width == output_width &&
+        filter_height == 1 && filter_width == 1 && bias_data &&
+        input_depth < MAX_CONV_INPUT_VALUES && (input_depth % 8) == 0 &&
+        (output_depth % 8) == 0) {
+      Mnv2ConvPerChannel1x1(params, output_multiplier, output_shift,
+                            input_shape, input_data, filter_shape, filter_data,
+                            bias_shape, bias_data, output_shape, output_data);
+      print_int32_array(output_data, output_shape);
 
-//   #ifdef ACCEL_CONV
-//   if (pad_width == 0 && pad_height == 0 && dilation_width_factor == 1 &&
-//       dilation_height_factor == 1 &&  // params.weights_offset == 0 &&
-//       output_activation_min == -128 && output_activation_max == 127 &&
-//       batches == 1) {
-//     if (params.stride_width == 1 && params.stride_height == 1 &&
-//         input_height == output_height && input_width == output_width &&
-//         filter_height == 1 && filter_width == 1 && bias_data &&
-//         input_depth < MAX_CONV_INPUT_VALUES && (input_depth % 8) == 0 &&
-//         (output_depth % 8) == 0) {
-//       Mnv2ConvPerChannel1x1(params, output_multiplier, output_shift,
-//                             input_shape, input_data, filter_shape, filter_data,
-//                             bias_shape, bias_data, output_shape, output_data);
-//       return;
-//     }
-//   }
-// #endif
+      return;
+    }
+  }
+#endif
 
 
 #ifdef DUMP_CONV

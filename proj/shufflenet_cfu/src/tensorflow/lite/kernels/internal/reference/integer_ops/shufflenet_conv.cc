@@ -104,29 +104,34 @@ inline static void LoadFilterValues(const uint32_t*& filter_words,
 }
 
 inline static void LoadInputValues(const uint32_t*& input_ptr,
-                                   int input_depth_words) {
-  PERF_START(6);
-  for (; input_depth_words > 4; input_depth_words -= 4) {
-    CFU_STORE_INPUT_VALUE(*(input_ptr++));
-    CFU_STORE_INPUT_VALUE(*(input_ptr++));
-    CFU_STORE_INPUT_VALUE(*(input_ptr++));
-    CFU_STORE_INPUT_VALUE(*(input_ptr++));
-
-
-  }
-  PERF_END(6);
+  int input_depth_words) {
+PERF_START(6);
+for (; input_depth_words > 2; input_depth_words -= 4) {
+CFU_STORE_INPUT_VALUE(*(input_ptr++));
+CFU_STORE_INPUT_VALUE(*(input_ptr++));
+CFU_STORE_INPUT_VALUE(*(input_ptr++));
+CFU_STORE_INPUT_VALUE(*(input_ptr++));
+}
+if (input_depth_words == 2) {
+CFU_STORE_INPUT_VALUE(*(input_ptr++));
+CFU_STORE_INPUT_VALUE(*(input_ptr++));
+}
+PERF_END(6);
 }
 
 inline static void UnloadOutputValues(uint32_t*& output_ptr, int num_words) {
-  PERF_START(7);
-  for (; num_words > 4; num_words -= 4) {
-    *(output_ptr++) = CFU_GET_OUTPUT();
-    *(output_ptr++) = CFU_GET_OUTPUT();
-    *(output_ptr++) = CFU_GET_OUTPUT();
-    *(output_ptr++) = CFU_GET_OUTPUT();
-  }
- 
-  PERF_END(7);
+PERF_START(7);
+for (; num_words > 2; num_words -= 4) {
+*(output_ptr++) = CFU_GET_OUTPUT();
+*(output_ptr++) = CFU_GET_OUTPUT();
+*(output_ptr++) = CFU_GET_OUTPUT();
+*(output_ptr++) = CFU_GET_OUTPUT();
+}
+if (num_words == 2) {
+*(output_ptr++) = CFU_GET_OUTPUT();
+*(output_ptr++) = CFU_GET_OUTPUT();
+}
+PERF_END(7);
 }
 
 // Fixed-point per-channel-quantization convolution reference kernel.
