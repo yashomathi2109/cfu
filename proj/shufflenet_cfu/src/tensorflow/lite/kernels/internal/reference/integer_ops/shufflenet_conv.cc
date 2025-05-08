@@ -196,7 +196,9 @@ void Mnv2ConvPerChannel1x1(
     // Reset input and output pointers
     const uint32_t* input_ptr = (uint32_t*)(input_data +((batch_base + batch_size)/output_depth)* input_depth ) ;
     uint32_t* output_ptr = (uint32_t*)(output_data);
-    printf("input ptr is %d",input_ptr);
+    printf("input ptr is %ln",input_ptr);
+    printf("output ptr is %ln",output_ptr);
+
 
 
     // Load twice on first loop, no load on last loop and once every other
@@ -205,7 +207,7 @@ void Mnv2ConvPerChannel1x1(
     printf("loading ip1");
     for (int p = 0; p < num_pixels - 1; p++) {
       input_ptr += input_depth_words;
-      printf("ip ptr is %d",input_ptr);
+      printf("ip ptr is %ln",input_ptr);
       LoadInputValues(input_ptr, input_depth_words);
       printf("loading ip1");
       CFU_MACC_RUN();
@@ -213,7 +215,7 @@ void Mnv2ConvPerChannel1x1(
       UnloadOutputValues(output_ptr, batch_size / 4);
       printf("unloading done");
       output_ptr += (output_depth - batch_size) / 4;
-      printf("output ptr is %d",output_ptr);
+      printf("output ptr is %ln",output_ptr);
 
     }
     CFU_MACC_RUN();
