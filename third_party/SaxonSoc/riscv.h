@@ -5,6 +5,7 @@
 // MIT License: https://github.com/SpinalHDL/SaxonSoc/blob/dev-0.1/LICENSE
 
 #pragma once
+#include <stdio.h>
 
 //exceptions
 #define CAUSE_ILLEGAL_INSTRUCTION 2
