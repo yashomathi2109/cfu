@@ -91,8 +91,6 @@ inline static void LoadFilterValues(const uint32_t*& filter_words,
                                     int num_words) {
   PERF_START(4);
   for (int i = 0; i < num_words; i += 8) {
-    uint32_t value = *(filter_words++);
-    printf("Loading filter value: %lu\n", value);
     CFU_STORE_FILTER_VALUE(*(filter_words++));
     CFU_STORE_FILTER_VALUE(*(filter_words++));
     CFU_STORE_FILTER_VALUE(*(filter_words++));
@@ -109,8 +107,6 @@ inline static void LoadInputValues(const uint32_t*& input_ptr,
                                    int input_depth_words) {
   PERF_START(6);
   for (; input_depth_words > 4; input_depth_words -= 4) {
-    uint32_t value = *(input_ptr++);
-    printf("Loading input value: %lu\n", value);
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
     CFU_STORE_INPUT_VALUE(*(input_ptr++));
@@ -122,8 +118,6 @@ inline static void LoadInputValues(const uint32_t*& input_ptr,
 inline static void UnloadOutputValues(uint32_t*& output_ptr, int num_words) {
   PERF_START(7);
   for (; num_words >4 ; num_words -= 4) {
-    uint32_t value = CFU_GET_OUTPUT();
-    printf("Unloading output value: %lu\n", value);
     *(output_ptr++) = CFU_GET_OUTPUT();
     *(output_ptr++) = CFU_GET_OUTPUT();
     *(output_ptr++) = CFU_GET_OUTPUT();
@@ -181,17 +175,12 @@ void Mnv2ConvPerChannel1x1(
       (channels_per_batch - 1 + output_depth) / channels_per_batch;
       //const int num_batches = 1
   PERF_END(2);
-  printf("numbatches is %d",num_batches);
 
   for (int batch = 0; batch < num_batches; batch++) {
     const int batch_base = batch * channels_per_batch;
-    printf("batchbase is %d",batch_base);
     const int batch_end =
         std::min(output_depth, batch_base + channels_per_batch);
-        printf("batchend is %d",batch_end);
-
     const int batch_size = batch_end - batch_base;
-    printf("batchsize is %d",batch_size);
 
     // Load up output channel parameters and filter values
     LoadOutputChannelWeights(output_multiplier, output_shift, bias_data,
@@ -201,7 +190,7 @@ void Mnv2ConvPerChannel1x1(
     PERF_START(5);
     // Reset input and output pointers
     const uint32_t* input_ptr = (uint32_t*)(input_data +(batch_base* input_depth )) ;
-    uint32_t* output_ptr = (uint32_t*)(output_data);
+    uint32_t* output_ptr = (uint32_t*)(output_data +batch_base);
 
 
 
@@ -209,13 +198,10 @@ void Mnv2ConvPerChannel1x1(
     // time.
     LoadInputValues(input_ptr, input_depth_words);
     for (int p = 0; p < num_pixels - 1; p++) {
-      input_ptr += input_depth_words;
       LoadInputValues(input_ptr, input_depth_words);
-      printf("Running CFU_MACC_RUN\n");
       CFU_MACC_RUN();
-      printf("CFU_MACC_RUN completed\n");
       UnloadOutputValues(output_ptr, batch_size / 4);
-      output_ptr += (batch_size) / 4;
+      output_ptr += (output_depth - batch_size) / 4;
 
     }
     CFU_MACC_RUN();
