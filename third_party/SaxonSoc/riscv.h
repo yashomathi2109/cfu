@@ -230,5 +230,6 @@ asm(".set CUSTOM1  , 0x2B");
      : [result] "=r" (result)                      \
      : [arg1] "r" (rs1), [arg2] "r" (rs2)          \
     );                                             \
+    printf("opcode_R Debug: result=%lu\n", result);\
     result;                                        \
 })
