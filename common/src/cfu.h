@@ -72,8 +72,10 @@
 // =============== Switch HW vs SW
 
 #ifdef CFU_SOFTWARE_DEFINED
+#pragma message("CFU_SOFTWARE_DEFINED is defined. Using software CFU.")
 #define cfu_op(funct3, funct7, rs1, rs2) cfu_op_sw(funct3, funct7, rs1, rs2)
 #else
+#pragma message("CFU_SOFTWARE_DEFINED is not defined. Using software CFU.")
 #define cfu_op(funct3, funct7, rs1, rs2) cfu_op_hw(funct3, funct7, rs1, rs2)
 #endif
 
