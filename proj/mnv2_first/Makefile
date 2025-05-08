@@ -27,9 +27,9 @@ DEFINES += NDEBUG
 
 # so that CI can make a SW-only version of the executable
 #   (no custom instructions or CSRs)
-ifdef SW_ONLY
+#ifdef SW_ONLY
 DEFINES += NDEBUG NPROFILE CFU_SOFTWARE_DEFINED
-endif
+#endif
 
 # Uncomment to include pdti8 in built binary
 DEFINES += INCLUDE_MODEL_PDTI8
