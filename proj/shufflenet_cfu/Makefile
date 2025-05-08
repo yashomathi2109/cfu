@@ -22,9 +22,9 @@ export DEFINES :=
 # Uncomment this line to skip debug code (large effect on performance)
 DEFINES += NDEBUG
 
-ifdef SW_ONLY
+# ifdef SW_ONLY
 DEFINES += NDEBUG NPROFILE CFU_SOFTWARE_DEFINED
-endif
+# endif
 
 # Uncomment this line to skip individual profiling output (has minor effect on performance).
 #DEFINES += NPROFILE
