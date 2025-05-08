@@ -286,7 +286,7 @@ uint32_t calc_to_oq(struct OutputQueue* oq, struct InputStore* is,
 
 // Set register instruction
 uint32_t set_reg(int funct7, uint32_t in0, uint32_t in1) {
-  printf("The value mnv2 is: %lu\n", in0);
+  // printf("The value mnv2 is: %lu\n", in0);
   switch (funct7) {
     case 10:
       input_store_restart(&input_store);
