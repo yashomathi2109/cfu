@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ==============================================================================*/
 
-#include "tensorflow/lite/kernels/internal/reference/integer_ops/mnv2_conv.h"
+#include "tensorflow/lite/kernels/internal/reference/integer_ops/shufflenet_conv.h"
 
-#include "mnv2_cfu.h"
+#include "shufflenet_cfu.h"
 #include "perf.h"
 #include "playground_util/print_params.h"
 
