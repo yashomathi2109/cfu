@@ -267,6 +267,7 @@ int32_t macc4_run4(struct InputStore* is, struct FilterStore* fs) {
     for (uint32_t j = 0; j < is->input_depth; j++) {
       accumulator += macc4(input_store_read(&input_store),
                            filter_store_read(&filter_store));
+     printf("accumulator val is %d", accumulator);
     }
     result = (result >> 8) | ((0xff & post_process(accumulator)) << 24);
   }
@@ -325,7 +326,6 @@ uint32_t set_reg(int funct7, uint32_t in0, uint32_t in1) {
       return filter_store_set(&filter_store, in0);
     case 25:
       input_store_set(&input_store, in0);
-      // printf("The value sh is: %lu\n", in0);
       return 0;
 
     case 33:
