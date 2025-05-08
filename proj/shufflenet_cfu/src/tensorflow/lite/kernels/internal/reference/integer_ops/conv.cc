@@ -264,7 +264,7 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
   // Check dimensions of the tensors.
   const int input_height = input_shape.Dims(1);
   const int input_width = input_shape.Dims(2);
-  const int input_depth = input_shape.Dims(3);
+  //const int input_depth = input_shape.Dims(3);
   const int filter_height = filter_shape.Dims(1);
   const int filter_width = filter_shape.Dims(2);
   const int output_height = output_shape.Dims(1);
@@ -297,7 +297,7 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
 
               for (int in_channel = 0; in_channel < input_depth; ++in_channel) {
                 int32_t input_val = input_data[Offset(input_shape, batch, in_y,
-                                                      in_x, in_channel group * filter_input_depth)];
+                                                      in_x, in_channel+ group * filter_input_depth)];
                 int32_t filter_val = filter_data[Offset(
                     filter_shape, out_channel, filter_y, filter_x, in_channel)];
                 // Accumulate with 64 bits accumulator.
