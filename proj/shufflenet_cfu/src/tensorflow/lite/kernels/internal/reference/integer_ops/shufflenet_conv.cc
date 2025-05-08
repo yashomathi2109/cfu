@@ -173,6 +173,7 @@ void Mnv2ConvPerChannel1x1(
       CalculateChannelsPerBatch(input_depth, output_depth);
   const int num_batches =
       (channels_per_batch - 1 + output_depth) / channels_per_batch;
+      //const int num_batches = 1
   PERF_END(2);
   printf("numbatches is %d",num_batches);
 
@@ -190,12 +191,13 @@ void Mnv2ConvPerChannel1x1(
     PERF_START(5);
     // Reset input and output pointers
     const uint32_t* input_ptr = (uint32_t*)input_data;
-    uint32_t* output_ptr = (uint32_t*)(output_data + batch_base);
+    uint32_t* output_ptr = (uint32_t*)(output_data);
 
     // Load twice on first loop, no load on last loop and once every other
     // time.
     LoadInputValues(input_ptr, input_depth_words);
     for (int p = 0; p < num_pixels - 1; p++) {
+      input_ptr += input_depth_words;
       LoadInputValues(input_ptr, input_depth_words);
       CFU_MACC_RUN();
       UnloadOutputValues(output_ptr, batch_size / 4);
