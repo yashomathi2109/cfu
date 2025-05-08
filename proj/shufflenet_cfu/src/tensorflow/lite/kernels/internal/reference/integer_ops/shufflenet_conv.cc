@@ -151,8 +151,8 @@ void Mnv2ConvPerChannel1x1(
   PERF_START(2);
   // Get parameters.
 
-  printf("Input data:\n");
-  print_int8_array(input_data, input_shape);
+  // printf("Input data:\n");
+  // print_int8_array(input_data, input_shape);
   const int32_t input_offset = params.input_offset;  // r = s(q - Z)
   const int32_t output_offset = params.output_offset;
 
