@@ -208,9 +208,11 @@ asm(".set regnum_t6  , 31");
 asm(".set CUSTOM0  , 0x0B");
 asm(".set CUSTOM1  , 0x2B");
 
-#ifdef ISSUE_582_WORKAROUND
+#ifdef CUSTOM_INSTRUCTION_NOP
+#pragma message("CUSTOM_INSTRUCTION_NOP is defined")
 #define CUSTOM_INSTRUCTION_NOP "nop\n"
 #else
+#pragma message("CUSTOM_INSTRUCTION_NOP is not defined")
 #define CUSTOM_INSTRUCTION_NOP
 #endif
 
