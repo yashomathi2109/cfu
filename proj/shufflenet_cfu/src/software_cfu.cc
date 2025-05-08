@@ -229,6 +229,7 @@ struct OutputQueue output_queue;
 uint32_t oq_get(struct OutputQueue* oq) {
   uint32_t result = oq->data[oq->r];
   oq->r = (oq->r + 1) % EBRAM_DEPTH_WORDS;
+    printf("result val is %ld", result);
   return result;
 }
 
@@ -267,10 +268,10 @@ int32_t macc4_run4(struct InputStore* is, struct FilterStore* fs) {
     for (uint32_t j = 0; j < is->input_depth; j++) {
       accumulator += macc4(input_store_read(&input_store),
                            filter_store_read(&filter_store));
-     printf("accumulator val is %ld", accumulator);
+     //printf("accumulator val is %ld", accumulator);
     }
     result = (result >> 8) | ((0xff & post_process(accumulator)) << 24);
-    printf("result val is %ld", result);
+    //printf("result val is %ld", result);
 
   }
   return result;
