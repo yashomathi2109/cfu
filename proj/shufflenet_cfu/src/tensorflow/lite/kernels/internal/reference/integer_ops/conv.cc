@@ -255,7 +255,6 @@ if (pad_width == 0 && pad_height == 0 && dilation_width_factor == 1 &&
   }
 }
 
-delete[] output_data_accel;
   #ifdef DUMP_CONV
   if (filter_shape.FlatSize() == 2304) {
     puts("-----\noutput_shape");
