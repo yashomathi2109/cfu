@@ -228,12 +228,12 @@ for (int batch = 0; batch < batches; ++batch) {
     }
   }
 // Compare the outputs
-bool mismatch_found = false;
+// bool mismatch_found = false;
 for (int i = 0; i < output_shape.FlatSize(); ++i) {
   if (output_data_accel[i] != output_data[i]) {
     printf("Mismatch at index %d: accel=%d, non-accel=%d\n",
            i, output_data_accel[i], output_data[i]);
-    mismatch_found = true;
+    // mismatch_found = true;
   }
 }
   #ifdef DUMP_CONV
