@@ -53,7 +53,9 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
   const int pad_width = params.padding_values.width;
   const int pad_height = params.padding_values.height;
   const int32_t output_offset = params.output_offset;
-  int8_t* output_data_accel = new int8_t[output_shape.FlatSize()];
+  constexpr int MAX_OUTPUT_SIZE = 100024;  // Adjust this size as needed
+  int8_t output_data_accel[MAX_OUTPUT_SIZE];
+
 
   // Perform convolution (non-accelerated)
   for (int i = 0; i < output_shape.FlatSize(); ++i) {
@@ -234,13 +236,25 @@ for (int batch = 0; batch < batches; ++batch) {
   }
 // Compare the outputs
 // bool mismatch_found = false;
-for (int i = 0; i < output_shape.FlatSize(); ++i) {
-  if (output_data_accel[i] != output_data[i]) {
-    printf("Mismatch at index %d: accel=%d, non-accel=%d\n",
-           i, output_data_accel[i], output_data[i]);
-    // mismatch_found = true;
+if (pad_width == 0 && pad_height == 0 && dilation_width_factor == 1 &&
+    dilation_height_factor == 1 &&  // params.weights_offset == 0 &&
+    output_activation_min == -128 && output_activation_max == 127 &&
+    batches == 1) {
+  if (params.stride_width == 1 && params.stride_height == 1 &&
+      input_height == output_height && input_width == output_width &&
+      filter_height == 1 && filter_width == 1 && bias_data &&
+      input_depth < MAX_CONV_INPUT_VALUES && (input_depth % 8) == 0 &&
+      (output_depth % 8) == 0) {
+        for (int i = 0; i < output_shape.FlatSize(); ++i) {
+          if (output_data_accel[i] != output_data[i]) {
+            printf("Mismatch at index %d: accel=%d, non-accel=%d\n",
+                   i, output_data_accel[i], output_data[i]);
+            // mismatch_found = true;
+          }
+        }
   }
 }
+
 delete[] output_data_accel;
   #ifdef DUMP_CONV
   if (filter_shape.FlatSize() == 2304) {
