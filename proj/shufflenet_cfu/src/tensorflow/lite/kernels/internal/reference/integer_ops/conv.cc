@@ -54,14 +54,14 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
   const int pad_height = params.padding_values.height;
   const int32_t output_offset = params.output_offset;
   // constexpr int MAX_OUTPUT_SIZE = 54000;  // Adjust this size as needed
-  int8_t output_data_accel[54000];
+  //int8_t output_data_accel[54000];
 
 
 
-  // Perform convolution (non-accelerated)
-  for (int i = 0; i < output_shape.FlatSize(); ++i) {
-    output_data_accel[i] = output_data[i];  // Example: Copy original data
-  }
+  // // Perform convolution (non-accelerated)
+  // for (int i = 0; i < output_shape.FlatSize(); ++i) {
+  //   output_data_accel[i] = output_data[i];  // Example: Copy original data
+  // }
 
   // Set min and max value of the output.
   const int32_t output_activation_min = params.quantized_activation_min;
@@ -97,45 +97,23 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
         filter_height == 1 && filter_width == 1 && bias_data &&
         input_depth < MAX_CONV_INPUT_VALUES && (input_depth % 8) == 0 &&
         (output_depth % 8) == 0) {
-      printf("Output shape dimensions: ");
-      for (int i = 0; i < output_shape.DimensionsCount(); ++i) {
-        printf("%ld ", static_cast<long>(output_shape.Dims(i)));
-      }
-      printf("\n");
+      // printf("Output shape dimensions: ");
+      // for (int i = 0; i < output_shape.DimensionsCount(); ++i) {
+      //   printf("%ld ", static_cast<long>(output_shape.Dims(i)));
+      // }
+      // printf("\n");
       ShConvPerChannel1x1(params, output_multiplier, output_shift,
                             input_shape, input_data, filter_shape, filter_data,
-                            bias_shape, bias_data, output_shape, output_data_accel);
+                            bias_shape, bias_data, output_shape, output_data);
       // print_int8_array(output_data, output_shape);
 
-      // return;
+      return;
     }
   }
 #endif
 
 
-#ifdef DUMP_CONV
-  if (filter_shape.FlatSize() == 2304) {
-    puts("\n\nDumping conv op");
-    puts("-----\nparams");
-    b64_dump((const int8_t*)(const void*)&params, sizeof(params));
-    puts("-----\noutput_multiplier");
-    b64_dump((const int8_t*)output_multiplier, output_depth * sizeof(uint32_t));
-    puts("-----\noutput_shift");
-    b64_dump((const int8_t*)output_shift, output_depth * sizeof(uint32_t));
-    puts("-----\ninput_shape");
-    b64_dump((const int8_t*)(const void*)&input_shape, sizeof(input_shape));
-    puts("-----\ninput_data");
-    b64_dump(input_data, input_shape.FlatSize());
-    puts("-----\nfilter_shape");
-    b64_dump((const int8_t*)(const void*)&filter_shape, sizeof(filter_shape));
-    puts("-----\nfilter_data");
-    b64_dump(filter_data, filter_shape.FlatSize());
-    puts("-----\nbias_shape");
-    b64_dump((const int8_t*)(const void*)&bias_shape, sizeof(bias_shape));
-    puts("-----\nbias_data");
-    b64_dump((const int8_t*)bias_data, output_depth * sizeof(uint32_t));
-  }
-#endif
+
 
 const int filter_input_depth = filter_shape.Dims(3);
 //   const int groups = input_depth / filter_input_depth;
@@ -240,26 +218,26 @@ for (int batch = 0; batch < batches; ++batch) {
       }
     }
   }
-// Compare the outputs
-// bool mismatch_found = false;
-if (pad_width == 0 && pad_height == 0 && dilation_width_factor == 1 &&
-    dilation_height_factor == 1 &&  // params.weights_offset == 0 &&
-    output_activation_min == -128 && output_activation_max == 127 &&
-    batches == 1) {
-  if (params.stride_width == 1 && params.stride_height == 1 &&
-      input_height == output_height && input_width == output_width &&
-      filter_height == 1 && filter_width == 1 && bias_data &&
-      input_depth < MAX_CONV_INPUT_VALUES && (input_depth % 8) == 0 &&
-      (output_depth % 8) == 0) {
-        for (int i = 0; i < output_shape.FlatSize(); ++i) {
-          if (output_data_accel[i] != output_data[i]) {
-            printf("Mismatch at index %d: accel=%d, non-accel=%d\n",
-                   i, output_data_accel[i], output_data[i]);
-            // mismatch_found = true;
-          }
-        }
-  }
-}
+// // Compare the outputs
+// // bool mismatch_found = false;
+// if (pad_width == 0 && pad_height == 0 && dilation_width_factor == 1 &&
+//     dilation_height_factor == 1 &&  // params.weights_offset == 0 &&
+//     output_activation_min == -128 && output_activation_max == 127 &&
+//     batches == 1) {
+//   if (params.stride_width == 1 && params.stride_height == 1 &&
+//       input_height == output_height && input_width == output_width &&
+//       filter_height == 1 && filter_width == 1 && bias_data &&
+//       input_depth < MAX_CONV_INPUT_VALUES && (input_depth % 8) == 0 &&
+//       (output_depth % 8) == 0) {
+//         for (int i = 0; i < output_shape.FlatSize(); ++i) {
+//           if (output_data_accel[i] != output_data[i]) {
+//             printf("Mismatch at index %d: accel=%d, non-accel=%d\n",
+//                    i, output_data_accel[i], output_data[i]);
+// //             // mismatch_found = true;
+//           }
+//         }
+//   }
+// }
 
   #ifdef DUMP_CONV
   if (filter_shape.FlatSize() == 2304) {

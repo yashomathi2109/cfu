@@ -10,7 +10,7 @@ extern "C" {
 };
 
 static void shufflenet_init(void) {
-  tflite_load_model(shufflenet_v2 ,shufflenet_v2_len);
+  tflite_load_model(shufflenetv2_int8 ,shufflenetv2_int8_len);
 }
 
 // Run classification, after input has been loaded
