@@ -236,9 +236,10 @@ void oq_put(struct OutputQueue* oq, uint32_t word) {
   oq->data[oq->w] = word;
   oq->w = (oq->w + 1) % EBRAM_DEPTH_WORDS;
   static int dbg_ctr = 0;
-  if (dbg_ctr++ == 0) {
-    printf("oqput shuff: 0x%08lx\n", word);
-  }
+  // if (dbg_ctr++ == 0) {
+  printf("oqput shuff: 0x%08lx\n", word);
+  printf("oqput shuff: 0x%08lx\n", oq->data[oq->w]);
+  // }
 }
 
 inline int32_t macc(const int8_t input_val, int8_t filter_val) {
