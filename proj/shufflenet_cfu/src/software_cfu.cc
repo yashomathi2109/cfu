@@ -229,7 +229,7 @@ struct OutputQueue output_queue;
 uint32_t oq_get(struct OutputQueue* oq) {
   uint32_t result = oq->data[oq->r];
   oq->r = (oq->r + 1) % EBRAM_DEPTH_WORDS;
-  printf("oq_get: result=0x%08lx\n", result);  // Print the result
+  // printf("oq_get: result=0x%08lx\n", result);  // Print the result
   return result;
 }
 

@@ -122,15 +122,27 @@ PERF_END(6);
 inline static void UnloadOutputValues(uint32_t*& output_ptr, int num_words) {
 PERF_START(7);
 for (; num_words > 2; num_words -= 4) {
-*(output_ptr++) = CFU_GET_OUTPUT();
-*(output_ptr++) = CFU_GET_OUTPUT();
-*(output_ptr++) = CFU_GET_OUTPUT();
-*(output_ptr++) = CFU_GET_OUTPUT();
+  uint32_t value1 = CFU_GET_OUTPUT();
+  uint32_t value2 = CFU_GET_OUTPUT();
+  uint32_t value3 = CFU_GET_OUTPUT();
+  uint32_t value4 = CFU_GET_OUTPUT();
 
+  printf("CFU_GET_OUTPUT values: 0x%08lx, 0x%08lx, 0x%08lx, 0x%08lx\n",
+         value1, value2, value3, value4);
+
+  *(output_ptr++) = value1;
+  *(output_ptr++) = value2;
+  *(output_ptr++) = value3;
+  *(output_ptr++) = value4;
 }
 if (num_words == 2) {
-*(output_ptr++) = CFU_GET_OUTPUT();
-*(output_ptr++) = CFU_GET_OUTPUT();
+  uint32_t value1 = CFU_GET_OUTPUT();
+  uint32_t value2 = CFU_GET_OUTPUT();
+
+  printf("CFU_GET_OUTPUT values numwords2: 0x%08lx, 0x%08lx\n", value1, value2);
+
+  *(output_ptr++) = value1;
+  *(output_ptr++) = value2;
 }
 PERF_END(7);
 }
