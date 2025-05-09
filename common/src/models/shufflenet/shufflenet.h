@@ -21,10 +21,10 @@
 extern "C" {
 #endif
 
-// Mobile Net v2 model processing menu
+// shufflenet processing menu
 void shufflenet_menu();
 
 #ifdef __cplusplus
 }
 #endif
-#endif  // _MNV2H
+#endif  // _SHH
