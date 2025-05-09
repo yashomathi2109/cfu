@@ -105,7 +105,6 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
       ShConvPerChannel1x1(params, output_multiplier, output_shift,
                             input_shape, input_data, filter_shape, filter_data,
                             bias_shape, bias_data, output_shape, output_data);
-       print_int8_array(output_data, output_shape);
 
       return;
     }
@@ -241,10 +240,10 @@ for (int batch = 0; batch < batches; ++batch) {
 
   #ifdef DUMP_CONV
   if (filter_shape.FlatSize() == 2304) {
-    puts("-----\noutput_shape");
-    b64_dump((const int8_t*)(const void*)&output_shape, sizeof(output_shape));
-    puts("-----\noutput_data");
-    b64_dump(output_data, output_shape.FlatSize());
+    puts("-----\nfil_shape");
+    b64_dump((const int8_t*)(const void*)&filter_shape, sizeof(filter_shape));
+    puts("-----\nfil_data");
+    b64_dump(filter_data, filter_shape.FlatSize());
     puts("-----\n");
   }
 #endif
