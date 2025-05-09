@@ -23,7 +23,7 @@ export DEFINES :=
 DEFINES += NDEBUG
 
 #ifdef SW_ONLY
-#DEFINES += NDEBUG NPROFILE CFU_SOFTWARE_DEFINED
+DEFINES += NDEBUG NPROFILE CFU_SOFTWARE_DEFINED
 #endif
 
 # Uncomment this line to skip individual profiling output (has minor effect on performance).
@@ -48,7 +48,7 @@ RUN_MENU_ITEMS := 3 1
 # Uncomment to include all TFLM examples (pdti8, micro_speech, magic_wand)
 #DEFINES += INCLUDE_ALL_TFLM_EXAMPLES
 
-DEFINES += DUMP_CONV
+#DEFINES += DUMP_CONV
 DEFINES += ACCEL_CONV
 
 # Uncomment this line to include the ASCII animated donut demo.
