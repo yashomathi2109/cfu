@@ -128,7 +128,7 @@ for (; num_words > 2; num_words -= 4) {
   uint32_t value4 = CFU_GET_OUTPUT();
 
   // Print values in decimal format
-  printf("CFU_GET_OUTPUT values: %lu, %lu, %lu, %lu\n",
+  // printf("CFU_GET_OUTPUT values: %lu, %lu, %lu, %lu\n",
     value1, value2, value3, value4);
 
 
@@ -141,7 +141,7 @@ if (num_words == 2) {
   uint32_t value1 = CFU_GET_OUTPUT();
   uint32_t value2 = CFU_GET_OUTPUT();
 
-  printf("CFU_GET_OUTPUT values numwords2: %lu, %lu\n", value1, value2);
+  // printf("CFU_GET_OUTPUT values numwords2: %lu, %lu\n", value1, value2);
 
   *(output_ptr++) = value1;
   *(output_ptr++) = value2;
