@@ -53,8 +53,8 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
   const int pad_width = params.padding_values.width;
   const int pad_height = params.padding_values.height;
   const int32_t output_offset = params.output_offset;
-  constexpr int MAX_OUTPUT_SIZE = 100024;  // Adjust this size as needed
-  int8_t output_data_accel[MAX_OUTPUT_SIZE];
+  // constexpr int MAX_OUTPUT_SIZE = 100024;  // Adjust this size as needed
+  int8_t *output_data_accel = output_data;
 
 
   // Perform convolution (non-accelerated)
@@ -96,6 +96,11 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
         filter_height == 1 && filter_width == 1 && bias_data &&
         input_depth < MAX_CONV_INPUT_VALUES && (input_depth % 8) == 0 &&
         (output_depth % 8) == 0) {
+      printf("Output shape dimensions: ");
+      for (int i = 0; i < output_shape.DimensionsCount(); ++i) {
+        printf("%d ", output_shape.Dims(i));
+      }
+      printf("\n");
       ShConvPerChannel1x1(params, output_multiplier, output_shift,
                             input_shape, input_data, filter_shape, filter_data,
                             bias_shape, bias_data, output_shape, output_data_accel);
