@@ -27,7 +27,7 @@ static void do_classify_zeros() {
     tflite_set_input_zeros();
     int32_t result = shufflenet_classify();
     return result;
-    printf("Result is 20);
+    printf("Result is 20");
 }
 
 
