@@ -267,7 +267,7 @@ int32_t macc4_run4(struct InputStore* is, struct FilterStore* fs) {
     for (uint32_t j = 0; j < is->input_depth; j++) {
       accumulator += macc4(input_store_read(&input_store),
                            filter_store_read(&filter_store));
-      printf("accumulator val is %ld", accumulator);
+      //printf("accumulator val is %ld", accumulator);
     }
     result = (result >> 8) | ((0xff & post_process(accumulator)) << 24);
   }
@@ -334,9 +334,13 @@ uint32_t set_reg(int funct7, uint32_t in0, uint32_t in1) {
       return calc_to_oq(&output_queue, &input_store, &filter_store);
 
     case 34:
-      return oq_get(&output_queue);
+     uint32_t result = oq_get(&output_queue);
+     printf("set_reg (case 34): result=%ld\n", result);
+     return result;
+      //return oq_get(&output_queue);
 
     default:
+      printf("Unhandled funct3");
       return 0;
   }
   return 0;

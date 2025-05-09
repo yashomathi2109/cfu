@@ -229,16 +229,17 @@ struct OutputQueue output_queue;
 uint32_t oq_get(struct OutputQueue* oq) {
   uint32_t result = oq->data[oq->r];
   oq->r = (oq->r + 1) % EBRAM_DEPTH_WORDS;
+  printf("oq_get: result=0x%08lx\n", result);  // Print the result
   return result;
 }
 
 void oq_put(struct OutputQueue* oq, uint32_t word) {
   oq->data[oq->w] = word;
   oq->w = (oq->w + 1) % EBRAM_DEPTH_WORDS;
-  // static int dbg_ctr = 0;
-  // if (dbg_ctr++ == 0) {
-  printf("oqput shuff word: 0x%08lx, oqput shuff: 0x%08lx\n", word, oq->data[oq->w]);
-  // }
+  static int dbg_ctr = 0;
+  if (dbg_ctr++ == 0) {
+    printf("oqput shuff word: 0x%08lx, oqput shuff: 0x%08lx\n", word, oq->data[oq->w]);
+  }
 }
 
 inline int32_t macc(const int8_t input_val, int8_t filter_val) {
@@ -334,7 +335,7 @@ uint32_t set_reg(int funct7, uint32_t in0, uint32_t in1) {
       return calc_to_oq(&output_queue, &input_store, &filter_store);
 
     case 34:
-      //printf("result val is %ld", oq_get(&output_queue));
+      // printf("result val is %ld", oq_get(&output_queue));
       return oq_get(&output_queue);
 
     default:
