@@ -1,4 +1,4 @@
-#include "models/shufflenet/shufflenet_v2.h"
+#include "models/shufflenet/shufflenetv2_int8.h"
 #include <stdio.h>
 #include "menu.h"
 #include "models/shufflenet/shufflenet.h"
