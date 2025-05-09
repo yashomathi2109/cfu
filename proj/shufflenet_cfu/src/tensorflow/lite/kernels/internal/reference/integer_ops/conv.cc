@@ -53,7 +53,7 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
   const int pad_width = params.padding_values.width;
   const int pad_height = params.padding_values.height;
   const int32_t output_offset = params.output_offset;
-  int8_t* output_data_accel = new int8_t[output_shape.FlatSize()];  // Use the provided buffer for accelerated output
+  int8_t* output_data_accel = output_data;// Use the provided buffer for accelerated output
 
   // Set min and max value of the output.
   const int32_t output_activation_min = params.quantized_activation_min;
