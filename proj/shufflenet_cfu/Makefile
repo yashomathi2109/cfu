@@ -51,7 +51,7 @@ RUN_MENU_ITEMS := 3 1
 #DEFINES += INCLUDE_ALL_TFLM_EXAMPLES
 
 #DEFINES += DUMP_CONV
-DEFINES += ACCEL_CONV
+#DEFINES += ACCEL_CONV
 
 # Uncomment this line to include the ASCII animated donut demo.
 #DEFINES += DONUT_DEMO
