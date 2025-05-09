@@ -25,7 +25,7 @@ export DEFINES :=
 DEFINES += NDEBUG
 
 #ifdef SW_ONLY
-DEFINES += NDEBUG NPROFILE CFU_SOFTWARE_DEFINED
+#DEFINES += NDEBUG NPROFILE CFU_SOFTWARE_DEFINED
 #endif
 
 # Uncomment this line to skip individual profiling output (has minor effect on performance).
