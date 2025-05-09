@@ -98,7 +98,7 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
         (output_depth % 8) == 0) {
       printf("Output shape dimensions: ");
       for (int i = 0; i < output_shape.DimensionsCount(); ++i) {
-        printf("%d ", output_shape.Dims(i));
+        printf("%ld ", static_cast<long>(output_shape.Dims(i)));
       }
       printf("\n");
       ShConvPerChannel1x1(params, output_multiplier, output_shift,
