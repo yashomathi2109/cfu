@@ -25,13 +25,13 @@ export DEFINES :=
 DEFINES += NDEBUG
 
 #ifdef SW_ONLY
-#DEFINES += NDEBUG NPROFILE CFU_SOFTWARE_DEFINED
+DEFINES += NDEBUG NPROFILE CFU_SOFTWARE_DEFINED
 #endif
 
 # Uncomment this line to skip individual profiling output (has minor effect on performance).
 #DEFINES += NPROFILE
 # Uncomment to include pdti8 in built binary
-DEFINES += INCLUDE_MODEL_PDTI8
+#DEFINES += INCLUDE_MODEL_PDTI8
 
 # Uncomment to include mnv2 in built binary (adds ~500kB to binary)
 ifneq 'hps' '$(PLATFORM)'
@@ -51,7 +51,7 @@ RUN_MENU_ITEMS := 3 1
 #DEFINES += INCLUDE_ALL_TFLM_EXAMPLES
 
 #DEFINES += DUMP_CONV
-#DEFINES += ACCEL_CONV
+DEFINES += ACCEL_CONV
 
 # Uncomment this line to include the ASCII animated donut demo.
 #DEFINES += DONUT_DEMO
