@@ -53,6 +53,7 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
   const int pad_width = params.padding_values.width;
   const int pad_height = params.padding_values.height;
   const int32_t output_offset = params.output_offset;
+  int8_t* output_data_accel = output_data;  // Use the provided buffer for accelerated output
 
   // Set min and max value of the output.
   const int32_t output_activation_min = params.quantized_activation_min;
@@ -90,10 +91,10 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
         (output_depth % 8) == 0) {
       ShConvPerChannel1x1(params, output_multiplier, output_shift,
                             input_shape, input_data, filter_shape, filter_data,
-                            bias_shape, bias_data, output_shape, output_data);
+                            bias_shape, bias_data, output_shape, output_data_accel);
       // print_int8_array(output_data, output_shape);
 
-      return;
+      // return;
     }
   }
 #endif
@@ -226,7 +227,16 @@ for (int batch = 0; batch < batches; ++batch) {
       }
     }
   }
-#ifdef DUMP_CONV
+// Compare the outputs
+bool mismatch_found = false;
+for (int i = 0; i < output_shape.FlatSize(); ++i) {
+  if (output_data_accel[i] != output_data[i]) {
+    printf("Mismatch at index %d: accel=%d, non-accel=%d\n",
+           i, output_data_accel[i], output_data[i]);
+    mismatch_found = true;
+  }
+}
+  #ifdef DUMP_CONV
   if (filter_shape.FlatSize() == 2304) {
     puts("-----\noutput_shape");
     b64_dump((const int8_t*)(const void*)&output_shape, sizeof(output_shape));
