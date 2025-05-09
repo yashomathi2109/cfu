@@ -54,7 +54,7 @@ void ConvPerChannel(const ConvParams& params, const int32_t* output_multiplier,
   const int pad_height = params.padding_values.height;
   const int32_t output_offset = params.output_offset;
   // constexpr int MAX_OUTPUT_SIZE = 54000;  // Adjust this size as needed
-  int8_t* output_data_accel = new int8_t[54000];
+  int8_t output_data_accel[54000];
 
 
 
