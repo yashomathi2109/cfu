@@ -129,7 +129,7 @@ for (; num_words > 2; num_words -= 4) {
 
   // Print values in decimal format
   // printf("CFU_GET_OUTPUT values: %lu, %lu, %lu, %lu\n",
-    value1, value2, value3, value4);
+    // value1, value2, value3, value4);
 
 
   *(output_ptr++) = value1;
